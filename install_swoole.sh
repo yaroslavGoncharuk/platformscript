@@ -1,7 +1,7 @@
 run() {
     # Run the compilation process.
     pwd
-    cd ./tmp || exit 1;
+    cd ../../tmp || exit 1;
 
     SWOOLE_PROJECT=$1;
     SWOOLE_VERSION=$2;
