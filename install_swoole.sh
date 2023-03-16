@@ -1,6 +1,7 @@
 run() {
     # Run the compilation process.
-    pwd;
+    pwd
+    cd ./tmp || exit 1;
 
     SWOOLE_PROJECT=$1;
     SWOOLE_VERSION=$2;
@@ -27,7 +28,7 @@ copy_lib() {
     SWOOLE_PROJECT=$1;
     SWOOLE_BINARY=$2;
 
-    cp "tmp/${SWOOLE_BINARY}.so" "${MAGENTO_APP_DIR}/${SWOOLE_PROJECT}.so"
+    cp "tmp/${SWOOLE_BINARY}.so" "app/${SWOOLE_PROJECT}.so"
 }
 
 enable_lib() {
