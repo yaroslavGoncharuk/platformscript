@@ -90,7 +90,7 @@ compile_source() {
     echo "--------------------"
 
     ./autogen.sh
-    ./configure --prefix="tmp/$SWOOLE_PROJECT/swoole-src"
+    ./configure --prefix="tmp/tmp/$SWOOLE_PROJECT/swoole-src"
     make
     make install
 
