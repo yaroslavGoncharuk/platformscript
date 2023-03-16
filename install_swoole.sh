@@ -49,7 +49,7 @@ move_extension() {
     SWOOLE_PROJECT=$1;
     SWOOLE_BINARY=$2;
 
-    mv "tmp/${SWOOLE_PROJECT}/swoole-src/modules/${SWOOLE_PROJECT}.so" "tmp/${SWOOLE_BINARY}.so"
+    mv "/tmp/tmp/${SWOOLE_PROJECT}/swoole-src/modules/${SWOOLE_PROJECT}.so" "tmp/${SWOOLE_BINARY}.so"
 }
 
 ensure_source() {
@@ -90,7 +90,7 @@ compile_source() {
     echo "--------------------"
 
     ./autogen.sh
-    ./configure --prefix="tmp/tmp/$SWOOLE_PROJECT/swoole-src"
+    ./configure --prefix="/tmp/tmp/$SWOOLE_PROJECT/swoole-src"
     make
     make install
 
