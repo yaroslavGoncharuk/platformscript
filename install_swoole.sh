@@ -16,7 +16,7 @@ run() {
     fi
 
     copy_lib "$SWOOLE_PROJECT" "$SWOOLE_BINARY"
-    enable_lib "$SWOOLE_PROJECT"
+#    enable_lib "$SWOOLE_PROJECT"
 }
 
 copy_lib() {
@@ -107,6 +107,7 @@ compile_source() {
                 --enable-http2 \
                 --with-postgres
     make
+    make test
 }
 
 ensure_environment() {
