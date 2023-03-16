@@ -1,11 +1,6 @@
-# contributors:
-#  - Thomas DI LUCCIO <thomas.diluccio@platform.sh>
-#  - Florent HUCK <florent.huck@platform.sh>
-#  - Benjamin Hirsch <mail@benjaminhirsch.net>
-
 run() {
     # Run the compilation process.
-    cd $MAGENTO_CACHE_DIR || exit 1;
+    cd tmp || exit 1;
 
     SWOOLE_PROJECT=$1;
     SWOOLE_VERSION=$2;
@@ -14,7 +9,7 @@ run() {
     SWOOLE_BINARY="${SWOOLE_PROJECT}_v$2-php${PHP_VERSION}"
     SWOOLE_BINARY="${SWOOLE_BINARY//\./_}"
 
-    if [ ! -f "${MAGENTO_CACHE_DIR}/${SWOOLE_BINARY}.so" ]; then
+    if [ ! -f "tmp/${SWOOLE_BINARY}.so" ]; then
         ensure_source "$SWOOLE_PROJECT" "$SWOOLE_VERSION"
         compile_source "$SWOOLE_PROJECT"
         move_extension "$SWOOLE_PROJECT" "$SWOOLE_BINARY"
@@ -26,13 +21,13 @@ run() {
 
 copy_lib() {
     echo "------------------------------------------------"
-    echo " Copying compiled extension to MAGENTO_APP_DIR "
+    echo " Copying compiled extension to tmp_APP_DIR "
     echo "------------------------------------------------"
 
     SWOOLE_PROJECT=$1;
     SWOOLE_BINARY=$2;
 
-    cp "${MAGENTO_CACHE_DIR}/${SWOOLE_BINARY}.so" "${MAGENTO_APP_DIR}/${SWOOLE_PROJECT}.so"
+    cp "tmp/${SWOOLE_BINARY}.so" "${MAGENTO_APP_DIR}/${SWOOLE_PROJECT}.so"
 }
 
 enable_lib() {
@@ -53,7 +48,7 @@ move_extension() {
     SWOOLE_PROJECT=$1;
     SWOOLE_BINARY=$2;
 
-    mv "${MAGENTO_CACHE_DIR}/${SWOOLE_PROJECT}/swoole-src/modules/${SWOOLE_PROJECT}.so" "${MAGENTO_CACHE_DIR}/${SWOOLE_BINARY}.so"
+    mv "tmp/${SWOOLE_PROJECT}/swoole-src/modules/${SWOOLE_PROJECT}.so" "tmp/${SWOOLE_BINARY}.so"
 }
 
 ensure_source() {
@@ -64,8 +59,8 @@ ensure_source() {
     SWOOLE_PROJECT=$1;
     SWOOLE_VERSION=$2;
 
-    mkdir -p "$MAGENTO_CACHE_DIR/$SWOOLE_PROJECT"
-    cd "$MAGENTO_CACHE_DIR/$SWOOLE_PROJECT" || exit 1;
+    mkdir -p "tmp/$SWOOLE_PROJECT"
+    cd "tmp/$SWOOLE_PROJECT" || exit 1;
 
     if [ -d "swoole-src" ]; then
         cd swoole-src || exit 1;
@@ -94,7 +89,7 @@ compile_source() {
     echo "--------------------"
 
     ./autogen.sh
-    ./configure --prefix="$MAGENTO_CACHE_DIR/$SWOOLE_PROJECT/swoole-src"
+    ./configure --prefix="tmp/$SWOOLE_PROJECT/swoole-src"
     make
     make install
 
@@ -114,8 +109,8 @@ compile_source() {
 
 ensure_environment() {
     # If not running in a Platform.sh build environment, do nothing.
-    if [ -z "${MAGENTO_CACHE_DIR}" ]; then
-        echo "Not running in a Platform.sh build environment.  Aborting Open Swoole installation. UP"
+    if [ -z "tmp" ]; then
+        echo "Not running in a Platform.sh build environment.  Aborting Open Swoole installation. U1"
         exit 0;
     fi
 }
