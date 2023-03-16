@@ -113,7 +113,7 @@ compile_source() {
 }
 
 ensure_environment() {
-    # If not running in a Platform.sh build environment, do nothing.
+    # If not running in a Platform.sh build environment, do nothing. UpdateY.
     if [ -z "${MAGENTO_CACHE_DIR}" ]; then
         echo "Not running in a Platform.sh build environment.  Aborting Open Swoole installation."
         exit 0;
