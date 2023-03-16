@@ -1,6 +1,5 @@
 run() {
     # Run the compilation process.
-    pwd
     cd ../../tmp || exit 1;
 
     SWOOLE_PROJECT=$1;
@@ -22,24 +21,24 @@ run() {
 
 copy_lib() {
     echo "------------------------------------------------"
-    echo " Copying compiled extension to tmp_APP_DIR "
+    echo " Copying compiled extension to MAGENTO_CLOUD_APP_DIR "
     echo "------------------------------------------------"
 
     SWOOLE_PROJECT=$1;
     SWOOLE_BINARY=$2;
 
-    cp "tmp/${SWOOLE_BINARY}.so" "app/r7nkji2zu5ecm/${SWOOLE_PROJECT}.so"
+    cp "tmp/${SWOOLE_BINARY}.so" "${MAGENTO_CLOUD_APP_DIR}${SWOOLE_PROJECT}.so"
 }
 
-enable_lib() {
-    echo "-------------------------------"
-    echo " Enabling extension in php.ini "
-    echo "-------------------------------"
-
-    SWOOLE_PROJECT=$1;
-
-    echo "extension=${MAGENTO_APP_DIR}/${SWOOLE_PROJECT}.so" >> $MAGENTO_APP_DIR/php.ini
-}
+#enable_lib() {
+#    echo "-------------------------------"
+#    echo " Enabling extension in php.ini "
+#    echo "-------------------------------"
+#
+#   SWOOLE_PROJECT=$1;
+#    pwd
+#    echo "extension=${MAGENTO_APP_DIR}/${SWOOLE_PROJECT}.so" >> $MAGENTO_APP_DIR/php.ini
+#}
 
 move_extension() {
     echo "---------------------------------------"
@@ -99,6 +98,8 @@ compile_source() {
     echo "---------------------"
 
     cd ..
+    echo "Yaroslav's Debug"
+    pwd
     phpize
     ./configure --enable-openssl \
                 --enable-mysqlnd \
