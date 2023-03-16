@@ -48,7 +48,7 @@ move_extension() {
 
     SWOOLE_PROJECT=$1;
     SWOOLE_BINARY=$2;
-
+    pwd
     mv "/tmp/tmp/${SWOOLE_PROJECT}/swoole-src/modules/${SWOOLE_PROJECT}.so" "tmp/${SWOOLE_BINARY}.so"
 }
 
