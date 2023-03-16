@@ -28,7 +28,7 @@ copy_lib() {
     SWOOLE_PROJECT=$1;
     SWOOLE_BINARY=$2;
 
-    cp "tmp/${SWOOLE_BINARY}.so" "app/${SWOOLE_PROJECT}.so"
+    cp "tmp/${SWOOLE_BINARY}.so" "app/r7nkji2zu5ecm/${SWOOLE_PROJECT}.so"
 }
 
 enable_lib() {
