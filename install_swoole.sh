@@ -27,7 +27,7 @@ copy_lib() {
     SWOOLE_PROJECT=$1;
     SWOOLE_BINARY=$2;
 
-    cp "tmp/${SWOOLE_BINARY}.so" "${MAGENTO_CLOUD_APP_DIR}${SWOOLE_PROJECT}.so"
+    cp "/tmp/${SWOOLE_BINARY}.so" "${MAGENTO_CLOUD_APP_DIR}${SWOOLE_PROJECT}.so"
 }
 
 #enable_lib() {
