@@ -30,7 +30,8 @@ copy_lib() {
     SWOOLE_PROJECT=$1;
     SWOOLE_BINARY=$2;
 
-    cp "${MAGENTO_CLOUD_CACHE_DIR}/${SWOOLE_BINARY}.so" "${MAGENTO_CLOUD_APP_DIR}/${SWOOLE_PROJECT}.so"
+   # cp "${MAGENTO_CLOUD_CACHE_DIR}/${SWOOLE_BINARY}.so" "${MAGENTO_CLOUD_APP_DIR}/${SWOOLE_PROJECT}.so"
+   cp "${MAGENTO_CLOUD_CACHE_DIR}/${SWOOLE_BINARY}.so" "/usr/lib/php/20210902-zts/${SWOOLE_PROJECT}.so"
 }
 
 enable_lib() {
@@ -50,7 +51,8 @@ move_extension() {
 
     SWOOLE_PROJECT=$1;
     SWOOLE_BINARY=$2;
-
+    echo "Debug move move_extension path";
+    pwd
     mv "${MAGENTO_CLOUD_CACHE_DIR}/${SWOOLE_PROJECT}/swoole-src/modules/${SWOOLE_PROJECT}.so" "${MAGENTO_CLOUD_CACHE_DIR}/${SWOOLE_BINARY}.so"
 }
 
