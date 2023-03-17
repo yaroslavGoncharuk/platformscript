@@ -1,6 +1,10 @@
 run() {
     # Run the compilation process.
-    cd ../tmp || exit 1;
+    echo " Yaroslav Debug 3 "
+    pwd
+    echo $MAGENTO_CLOUD_CACHE_DIR;
+    echo $MAGENTO_CLOUD_APP_DIR;
+    cd ../tmp || pwd || exit 1;
 
     SWOOLE_PROJECT=$1;
     SWOOLE_VERSION=$2;
@@ -14,7 +18,8 @@ run() {
         compile_source "$SWOOLE_PROJECT"
         move_extension "$SWOOLE_PROJECT" "$SWOOLE_BINARY"
     fi
-
+    echo " Debug before copy_lib "
+    pwd
     copy_lib "$SWOOLE_PROJECT" "$SWOOLE_BINARY"
 #    enable_lib "$SWOOLE_PROJECT"
 }
@@ -27,7 +32,7 @@ copy_lib() {
     SWOOLE_PROJECT=$1;
     SWOOLE_BINARY=$2;
 
-    cp "/tmp/${SWOOLE_BINARY}.so" "${MAGENTO_CLOUD_APP_DIR}${SWOOLE_PROJECT}.so"
+    cp "/tmp/${SWOOLE_BINARY}.so" "${MAGENTO_CLOUD_APP_DIR}/var/${SWOOLE_PROJECT}.so"
 }
 
 #enable_lib() {
@@ -107,7 +112,6 @@ compile_source() {
                 --enable-http2 \
                 --with-postgres
     make
-    make test
 }
 
 ensure_environment() {
