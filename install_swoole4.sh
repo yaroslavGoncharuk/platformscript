@@ -16,7 +16,7 @@ run() {
     fi
 
     copy_lib "$SWOOLE_PROJECT" "$SWOOLE_BINARY"
-    enable_lib "$SWOOLE_PROJECT"
+#    enable_lib "$SWOOLE_PROJECT"
 }
 
 copy_lib() {
@@ -134,7 +134,7 @@ ensure_arguments() {
     fi
 }
 
-ensure_environment
+#ensure_environment
 ensure_arguments "$1" "$2"
 
 SWOOLE_PROJECT=$1;
