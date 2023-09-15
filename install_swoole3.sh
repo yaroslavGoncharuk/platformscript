@@ -19,7 +19,7 @@ run() {
 
     echo "Debug Before Copy Lib";
     copy_lib "$SWOOLE_PROJECT" "$SWOOLE_BINARY"
-#    enable_lib "$SWOOLE_PROJECT"
+    enable_lib "$SWOOLE_PROJECT"
 }
 
 copy_lib() {
