@@ -1,10 +1,6 @@
 run() {
     # Run the compilation process.
-    echo " Yaroslav Debug 3 "
-    pwd
-    echo $MAGENTO_CLOUD_CACHE_DIR;
-    echo $MAGENTO_CLOUD_APP_DIR;
-    cd ../tmp || pwd || exit 1;
+    cd $MAGENTO_CLOUD_CACHE_DIR || exit 1;
 
     SWOOLE_PROJECT=$1;
     SWOOLE_VERSION=$2;
@@ -13,15 +9,14 @@ run() {
     SWOOLE_BINARY="${SWOOLE_PROJECT}_v$2-php${PHP_VERSION}"
     SWOOLE_BINARY="${SWOOLE_BINARY//\./_}"
 
-    if [ ! -f "tmp/${SWOOLE_BINARY}.so" ]; then
+    if [ ! -f "${MAGENTO_CLOUD_CACHE_DIR}/${SWOOLE_BINARY}.so" ]; then
         ensure_source "$SWOOLE_PROJECT" "$SWOOLE_VERSION"
         compile_source "$SWOOLE_PROJECT"
         move_extension "$SWOOLE_PROJECT" "$SWOOLE_BINARY"
     fi
-    echo " Debug before copy_lib "
-    pwd
+
     copy_lib "$SWOOLE_PROJECT" "$SWOOLE_BINARY"
-#    enable_lib "$SWOOLE_PROJECT"
+    enable_lib "$SWOOLE_PROJECT"
 }
 
 copy_lib() {
@@ -32,18 +27,18 @@ copy_lib() {
     SWOOLE_PROJECT=$1;
     SWOOLE_BINARY=$2;
 
-    cp "/tmp/${SWOOLE_BINARY}.so" "${MAGENTO_CLOUD_APP_DIR}/var/${SWOOLE_PROJECT}.so"
+    cp "${MAGENTO_CLOUD_CACHE_DIR}/${SWOOLE_BINARY}.so" "${MAGENTO_CLOUD_APP_DIR}/${SWOOLE_PROJECT}.so"
 }
 
-#enable_lib() {
-#    echo "-------------------------------"
-#    echo " Enabling extension in php.ini "
-#    echo "-------------------------------"
-#
-#   SWOOLE_PROJECT=$1;
-#    pwd
-#    echo "extension=${MAGENTO_APP_DIR}/${SWOOLE_PROJECT}.so" >> $MAGENTO_APP_DIR/php.ini
-#}
+enable_lib() {
+    echo "-------------------------------"
+    echo " Enabling extension in php.ini "
+    echo "-------------------------------"
+
+    SWOOLE_PROJECT=$1;
+
+    echo "extension=${MAGENTO_CLOUD_APP_DIR}/${SWOOLE_PROJECT}.so" >> $MAGENTO_CLOUD_APP_DIR/php.ini
+}
 
 move_extension() {
     echo "---------------------------------------"
@@ -52,8 +47,8 @@ move_extension() {
 
     SWOOLE_PROJECT=$1;
     SWOOLE_BINARY=$2;
-    pwd
-    mv "/tmp/tmp/${SWOOLE_PROJECT}/swoole-src/modules/${SWOOLE_PROJECT}.so" "/tmp/${SWOOLE_BINARY}.so"
+
+    mv "${MAGENTO_CLOUD_CACHE_DIR}/${SWOOLE_PROJECT}/swoole-src/modules/${SWOOLE_PROJECT}.so" "${MAGENTO_CLOUD_CACHE_DIR}/${SWOOLE_BINARY}.so"
 }
 
 ensure_source() {
@@ -64,8 +59,8 @@ ensure_source() {
     SWOOLE_PROJECT=$1;
     SWOOLE_VERSION=$2;
 
-    mkdir -p "tmp/$SWOOLE_PROJECT"
-    cd "tmp/$SWOOLE_PROJECT" || exit 1;
+    mkdir -p "$MAGENTO_CLOUD_CACHE_DIR/$SWOOLE_PROJECT"
+    cd "$MAGENTO_CLOUD_CACHE_DIR/$SWOOLE_PROJECT" || exit 1;
 
     if [ -d "swoole-src" ]; then
         cd swoole-src || exit 1;
@@ -94,7 +89,7 @@ compile_source() {
     echo "--------------------"
 
     ./autogen.sh
-    ./configure --prefix="/tmp/tmp/$SWOOLE_PROJECT/swoole-src"
+    ./configure --prefix="$MAGENTO_CLOUD_CACHE_DIR/$SWOOLE_PROJECT/swoole-src"
     make
     make install
 
@@ -103,8 +98,6 @@ compile_source() {
     echo "---------------------"
 
     cd ..
-    echo "Yaroslav's Debug"
-    pwd
     phpize
     ./configure --enable-openssl \
                 --enable-mysqlnd \
@@ -116,8 +109,8 @@ compile_source() {
 
 ensure_environment() {
     # If not running in a Platform.sh build environment, do nothing.
-    if [ -z "tmp" ]; then
-        echo "Not running in a Platform.sh build environment.  Aborting Open Swoole installation. U1"
+    if [ -z "${MAGENTO_CLOUD_CACHE_DIR}" ]; then
+        echo "Not running in a Platform.sh build environment.  Aborting Open Swoole installation."
         exit 0;
     fi
 }
